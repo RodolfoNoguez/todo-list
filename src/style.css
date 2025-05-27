@@ -85,3 +85,20 @@
 
 
 /*  */
+
+.projectnamecontainer{
+    outline: red solid 2px;
+    width: 200px;  
+    display: flex;
+}
+
+#deleteproject{
+    margin-left: 10px;
+}
+
+#project-container{
+    display: flex;
+    gap: 10px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
