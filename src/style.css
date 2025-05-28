@@ -89,7 +89,8 @@
 .projectnamecontainer{
     outline: red solid 2px;
     width: 200px;  
-    display: flex;
+    display: flex; 
+    height: 79vh; 
 }
 
 #deleteproject{
@@ -102,3 +103,23 @@
     flex-wrap: nowrap;
     overflow-x: auto;
 }
+
+/*  */
+.eachprojectcontainer{
+
+}
+
+#todoform{
+    display: none;
+    position: fixed;
+    width: 400px;
+    height: 100px;
+    align-items: center;
+    justify-content: center;
+    top: 35%;
+    left: 35%;
+    background-color: lightgray;
+    border-radius: 400px;
+}
+
+/*  */

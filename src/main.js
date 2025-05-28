@@ -13,7 +13,7 @@ document.getElementById('projectclose').addEventListener('click', () => {
 
 
 document.getElementById('projectf').addEventListener('submit', function (event) {
-    event.preventDefault(); // ✅ Prevents page reload
+    event.preventDefault(); // Prevents page reload
 
     const projectNameInput = document.getElementById('projectlabel');
     const projectName = projectNameInput.value.trim();
@@ -36,7 +36,13 @@ function addProject(name) {
     const projectDiv = document.createElement('div');
     if (currentCount < 5){
         projectDiv.classList.add('projectnamecontainer');
-        projectDiv.innerHTML = `<div>${name}</div> <button id="deleteproject">Delete</button>`;
+        projectDiv.innerHTML = `
+            <div id='${name}' class='eachprojectcontainer'>
+                <div>
+                    <div>${name}</div> 
+                    <button id="deleteproject">Delete</button>
+                </div>
+            </div>`;
         projectDiv.classList.add('project-entry');
 
         container.appendChild(projectDiv);
@@ -49,8 +55,15 @@ function addProject(name) {
     else{
         alert("you can only have 5 projects at a time");
     }
-
-
-
 }
 
+
+//add tasks to projects
+
+document.getElementById('projects').addEventListener('click', () => {
+    document.getElementById('todoform').style.display = 'flex';
+});
+
+document.getElementById('todoclose').addEventListener('click', () => {
+    document.getElementById('todoform').style.display = 'none';
+});
