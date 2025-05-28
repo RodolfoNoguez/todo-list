@@ -36,18 +36,18 @@ function addProject(name) {
     const projectDiv = document.createElement('div');
     if (currentCount < 5){
         projectDiv.classList.add('projectnamecontainer');
+        projectDiv.id =`${name}`
         projectDiv.innerHTML = `
-            <div id='${name}' class='eachprojectcontainer'>
-                <div>
-                    <div>${name}</div> 
-                    <button id="deleteproject">Delete</button>
-                </div>
-            </div>`;
+            <div class="projectlayout">
+                <div>${name}</div> 
+                <button class="deleteproject">Delete</button>
+            </div>
+            `;
         projectDiv.classList.add('project-entry');
 
         container.appendChild(projectDiv);
 
-        const deleteButton = projectDiv.querySelector('#deleteproject');
+        const deleteButton = projectDiv.querySelector('.deleteproject');
         deleteButton.addEventListener('click', () => {
             container.removeChild(projectDiv);
         });
@@ -55,6 +55,9 @@ function addProject(name) {
     else{
         alert("you can only have 5 projects at a time");
     }
+
+    populateDropdown(); // Update dropdown after adding
+
 }
 
 
@@ -67,3 +70,88 @@ document.getElementById('projects').addEventListener('click', () => {
 document.getElementById('todoclose').addEventListener('click', () => {
     document.getElementById('todoform').style.display = 'none';
 });
+
+
+
+function populateDropdown() {
+    // 1. Get the container and dropdown elements
+    const container = document.getElementById('projectnamecontainer') || document.getElementById('project-container');
+    const dropdown = document.getElementById('tododropdown');
+    
+    dropdown.innerHTML = '';
+    
+    // 3. Add default option
+    const defaultOption = new Option('-- Select Project --', '');
+    dropdown.add(defaultOption);
+    
+    // 4. Find ALL elements with IDs inside container (including nested ones)
+    const elementsWithIds = container.querySelectorAll('[id]');
+    
+    // 5. Add each ID to dropdown
+    elementsWithIds.forEach(element => {
+      // Skip the container's own ID and any duplicates
+      if (element.id !== 'project-container' && 
+          !Array.from(dropdown.options).some(opt => opt.value === element.id)) {
+        const option = new Option(element.id, element.id);
+        dropdown.add(option);
+      }
+    });
+    
+    console.log('Dropdown populated with:', Array.from(elementsWithIds).map(el => el.id));
+  }
+
+  // Example usage:
+document.getElementById('todoform').addEventListener('click', populateDropdown);
+
+
+
+
+
+
+//submit task form
+document.getElementById('todof').addEventListener('submit', function (event){
+    event.preventDefault();
+
+    const duedate = document.getElementById('tododate').value.trim();
+    const todotaskitem = document.getElementById('todolabel').value.trim();
+    const projectName = document.getElementById('tododropdown').value.trim();
+
+    //add task to display // not functional as of now
+    addtaskunderproject(duedate, todotaskitem, projectName);
+
+    //clear input and hide form
+    if (duedate === "" || todotaskitem === "" || projectName === "") return;
+    document.getElementById('todof').style.display = 'none';
+
+})
+
+// Add task under project
+function addtaskunderproject(duedate, todotaskitem, projectname){
+    const container = document.getElementById('project-container');
+    const currentCount = container.children.length;
+
+    const taskDiv = document.createElement('div');
+    if (currentCount < 5){
+        taskDiv.classList.add('projectnamecontainer');
+        taskDiv.id =`${name}`
+        taskDiv.innerHTML = `
+            <div class="tasklayout">
+                <div>${name}</div> 
+                <button class="deletetask">Delete</button>
+            </div>
+            `;
+        taskDiv.classList.add('project-entry');
+
+        container.appendChild(projectDiv);
+
+        const deleteButton = projectDiv.querySelector('.deletetask');
+        deleteButton.addEventListener('click', () => {
+            container.removeChild(projectDiv);
+        });
+    }
+    else{ 
+        alert("you can only have 5 projects at a time");
+    }
+
+    // populateDropdown(); // Update dropdown after adding
+}

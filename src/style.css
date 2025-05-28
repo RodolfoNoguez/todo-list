@@ -93,8 +93,10 @@
     height: 79vh; 
 }
 
-#deleteproject{
+.deleteproject{
     margin-left: 10px;
+    height:20px;
+    width: 60px;
 }
 
 #project-container{
@@ -112,7 +114,7 @@
 #todoform{
     display: none;
     position: fixed;
-    width: 400px;
+    width: 700px;
     height: 100px;
     align-items: center;
     justify-content: center;
@@ -123,3 +125,11 @@
 }
 
 /*  */
+
+.projectlayout{
+    display: flex;
+    width: 200px;
+    outline: black solid 2px;
+    justify-content: space-between;
+
+}
