@@ -33,31 +33,30 @@ function addProject(name) {
     const container = document.getElementById('project-container');
     const currentCount = container.children.length;
 
+    if (currentCount >= 5) {
+        alert("You can only have 5 projects at a time");
+        return;
+    }
+
     const projectDiv = document.createElement('div');
-    if (currentCount < 5){
-        projectDiv.classList.add('projectnamecontainer');
-        projectDiv.id =`${name}`
-        projectDiv.innerHTML = `
-            <div class="projectlayout">
-                <div>${name}</div> 
-                <button class="deleteproject">Delete</button>
-            </div>
-            `;
-        projectDiv.classList.add('project-entry');
+    projectDiv.classList.add('projectnamecontainer');
+    projectDiv.id =`${name}`
+    projectDiv.innerHTML = `
+        <div class="projectlayout">
+            <div>${name}</div> 
+            <button class="deleteproject">Delete</button>
+        </div>`;
+    projectDiv.classList.add('project-entry');
 
-        container.appendChild(projectDiv);
+    container.appendChild(projectDiv);
 
-        const deleteButton = projectDiv.querySelector('.deleteproject');
-        deleteButton.addEventListener('click', () => {
-            container.removeChild(projectDiv);
-        });
-    }
-    else{
-        alert("you can only have 5 projects at a time");
-    }
-
-    // populateDropdown(); // Update dropdown after adding
-
+    const deleteButton = projectDiv.querySelector('.deleteproject');
+    deleteButton.addEventListener('click', () => {
+        container.removeChild(projectDiv);
+        savedata();
+    });
+        
+    savedata();
 }
 
 
@@ -133,8 +132,8 @@ function addtaskunderproject(duedate, todotaskitem, projectname){
     taskDiv.classList.add('tasktnamecontainer');
     taskDiv.id = `task-${todotaskitem}`;
     taskDiv.innerHTML = `
-            <div>${todotaskitem}</div>
-            <div>${duedate}</div>
+            <div class='taskname'>${todotaskitem}</div>
+            <div class='duedatename'>Due ${duedate}</div>
             <button class="deletetask">Delete</button>
     `;
 
@@ -145,5 +144,43 @@ function addtaskunderproject(duedate, todotaskitem, projectname){
     const deleteButton = taskDiv.querySelector('.deletetask');
     deleteButton.addEventListener('click', () => {
         specificProject.removeChild(taskDiv);
+        savedata();
     });
+
+    savedata();
 }
+
+
+
+function savedata() {
+    const data = {};
+
+    const projects = document.querySelectorAll('.projectnamecontainer');
+    projects.forEach(project => {
+        const tasks = [];
+        project.querySelectorAll('.tasktnamecontainer').forEach(task => {
+            const taskName = task.querySelector('.taskname').innerText;
+            const dueDate = task.querySelector('.duedatename').innerText.replace('Due ', '');
+            tasks.push({ name: taskName, date: dueDate });
+        });
+        data[project.id] = tasks;
+    });
+
+    localStorage.setItem('todoData', JSON.stringify(data));
+}
+
+function loadData() {
+    const data = JSON.parse(localStorage.getItem('todoData'));
+    if (!data) return;
+
+    for (const project in data) {
+        addProject(project);
+        data[project].forEach(task => {
+            addtaskunderproject(task.date, task.name, project);
+        });
+    }
+}
+
+
+
+window.addEventListener('DOMContentLoaded', loadData);
