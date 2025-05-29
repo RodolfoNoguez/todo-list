@@ -87,7 +87,6 @@
 /*  */
 
 .projectnamecontainer{
-    outline: red solid 2px;
     width: 200px;  
     display: flex; 
     height: 79vh; 
